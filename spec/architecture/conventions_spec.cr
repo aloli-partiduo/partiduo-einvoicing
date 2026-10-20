@@ -7,14 +7,6 @@ private def source_files(pattern : String) : Array(String)
   Dir.glob(File.join(Einvoicing::SpecSupport::ROOT, pattern)).reject(&.includes?("/lib/")).sort!
 end
 
-private def flatten_keys(value : YAML::Any, prefix : String = "") : Array(String)
-  if hash = value.as_h?
-    hash.flat_map { |key, child| flatten_keys(child, prefix.empty? ? key.as_s : "#{prefix}.#{key.as_s}") }
-  else
-    [prefix]
-  end
-end
-
 describe "Conventions de l'extension EINV" do
   it "ne nomme le logiciel d'origine que dans la documentation (.adoc, .md)" do
     output = IO::Memory.new
@@ -35,15 +27,14 @@ describe "Conventions de l'extension EINV" do
     missing.should be_empty
   end
 
-  it "a les mêmes clés de traduction en fr, en et nl" do
-    %w[src/einvoicing/locales ui/bulma/locales].each do |dir|
-      keys = Partiduo::LOCALES.to_h do |locale|
-        tree = YAML.parse(File.read(File.join(Einvoicing::SpecSupport::ROOT, dir, "#{locale}.yml")))
-        {locale, flatten_keys(tree[locale]).sort}
-      end
-      keys["en"].should eq(keys["fr"])
-      keys["nl"].should eq(keys["fr"])
-    end
+  it "a les mêmes clés de traduction en fr, en et nl, aux mêmes interpolations" do
+    %w[src/einvoicing/locales ui/bulma/locales].flat_map do |dir|
+      PartiduoUi::Translations.parity_failures(File.join(Einvoicing::SpecSupport::ROOT, dir))
+    end.should eq([] of String)
+  end
+
+  it "traduit en fr, en et nl toute clé passée à I18n.t ou {% translate %} (cœur, interface, extension)" do
+    PartiduoUi::Translations.unknown_keys(Einvoicing::SpecSupport::ROOT, %w[src/**/*.cr ui/**/*.cr ui/**/*.html]).should eq([] of String)
   end
 
   it "traduit toute clé citée par le code et les gabarits de l'extension" do
