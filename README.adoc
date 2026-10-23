@@ -94,7 +94,7 @@ src/einvoicing/
 ├── models/, migrations/          # tables einvoicing_*
 ├── services/                     # règles internes (émission, réception, cycle de vie…)
 ├── api/                          # contrat public Einvoicing::Api
-└── locales/                      # fr, en, nl
+└── locales/                      # fr, en, nl, de, es, it, pt
 ui/bulma/                         # interface Bulma (Einvoicing::Ui), ADR-005 D4
 spec/support/platform.cr          # plateforme agréée simulée
 ----

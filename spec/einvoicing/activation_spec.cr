@@ -32,7 +32,7 @@ describe "Extension EINV : manifeste et activation (ADR-003 D1, D2 ; ADR-004 D1)
     Partiduo::Modules.dependency_errors(manifest, Set{"EINV"}).should_not be_empty
   end
 
-  it "traduit son nom, ses permissions et ses menus en fr, en et nl" do
+  it "traduit son nom, ses permissions et ses menus dans chaque langue de l'interface" do
     manifest = Partiduo::Modules[Einvoicing::CODE]
     keys = [manifest.name] + manifest.permission_entries.map(&.label) + manifest.menus.map(&.label)
     Partiduo::LOCALES.each do |locale|

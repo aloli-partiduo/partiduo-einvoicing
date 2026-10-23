@@ -4,17 +4,18 @@ require "../spec_helper"
 
 # Traductions des écrans de l'extension (ADR-005 D7) : chaque route de
 # `/ext/EINV/` servie en `GET` (liste tirée du routeur de Marten), obtenue
-# en fr, en et nl par un administrateur, plateforme raccordée, sur des
-# factures émises (à transmettre, transmise et déposée, hors plateforme),
-# des factures reçues (UBL et CII à traiter, pré-comptabilisée, refusée) et
-# un annuaire garni. Contrôle de l'interface (`PartiduoUi::Translations`) :
-# ni marqueur de traduction absente, ni clé brute, ni interpolation non
-# résolue, et toute route atteinte par les liens des pages.
+# dans chaque langue de l'interface par un administrateur, plateforme
+# raccordée, sur des factures émises (à transmettre, transmise et déposée,
+# hors plateforme), des factures reçues (UBL et CII à traiter,
+# pré-comptabilisée, refusée) et un annuaire garni. Contrôle de l'interface
+# (`PartiduoUi::Translations`) : ni marqueur de traduction absente, ni clé
+# brute, ni interpolation non résolue, et toute route atteinte par les liens
+# des pages.
 
 private alias S = Einvoicing::SpecSupport
 private alias Api = Einvoicing::Api
 
-describe "Traductions des écrans de la facturation électronique (fr, en, nl)" do
+describe "Traductions des écrans de la facturation électronique (chaque langue de l'interface)" do
   it "rend chaque écran dans chaque langue, sans clé absente, brute ni interpolation non résolue" do
     browser = S.signed_in
     sent = S.issue

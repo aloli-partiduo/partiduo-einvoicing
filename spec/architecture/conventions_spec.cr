@@ -27,13 +27,13 @@ describe "Conventions de l'extension EINV" do
     missing.should be_empty
   end
 
-  it "a les mêmes clés de traduction en fr, en et nl, aux mêmes interpolations" do
+  it "a les mêmes clés de traduction dans chaque langue de l'interface, aux mêmes interpolations" do
     %w[src/einvoicing/locales ui/bulma/locales].flat_map do |dir|
       PartiduoUi::Translations.parity_failures(File.join(Einvoicing::SpecSupport::ROOT, dir))
     end.should eq([] of String)
   end
 
-  it "traduit en fr, en et nl toute clé passée à I18n.t ou {% translate %} (cœur, interface, extension)" do
+  it "traduit dans chaque langue de l'interface toute clé passée à I18n.t ou {% translate %} (cœur, interface, extension)" do
     PartiduoUi::Translations.unknown_keys(Einvoicing::SpecSupport::ROOT, %w[src/**/*.cr ui/**/*.cr ui/**/*.html]).should eq([] of String)
   end
 
